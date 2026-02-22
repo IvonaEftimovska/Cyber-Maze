@@ -1,6 +1,4 @@
-# Cyber-Maze
-
-\# 🎮 Cyber Maze
+# 🎮 Cyber Maze
 
 
 
@@ -14,11 +12,11 @@ The game combines movement, strategy, and quiz-based learning inside a neon cybe
 
 
 
-\# 🇲🇰 Македонска верзија
+# Македонска верзија
 
 
 
-\## 📌 Опис на проектот
+## 📌 Опис на проектот
 
 
 
@@ -36,7 +34,7 @@ Cyber Maze е 2D едукативна игра изработена во Python 
 
 
 
-\## 🎯 Цел на играта
+## 🎯 Цел на играта
 
 
 
@@ -66,21 +64,21 @@ Cyber Maze е 2D едукативна игра изработена во Python 
 
 
 
-\## 🕹 Како се игра
+## 🕹 Како се игра
 
 
 
-\### Контроли:
+### Контроли:
 
 \- ⬅️ ➡️ ⬆️ ⬇️ Стрелки за движење
 
 \- P – Пауза (Mission Control)
 
-\- ESC – Излез од играта
+\- ESC – Излез од играта (Mission abort)
 
 
 
-\### Играчки механики:
+### Играчки механики:
 
 \- Движење низ лавиринт со 3 различни нивоа
 
@@ -98,7 +96,7 @@ Cyber Maze е 2D едукативна игра изработена во Python 
 
 
 
-\## 🧠 Едукативен аспект
+## 🧠 Едукативен аспект
 
 
 
@@ -126,7 +124,7 @@ Cyber Maze е 2D едукативна игра изработена во Python 
 
 
 
-\## 🛠 Технологии
+## 🛠 Технологии
 
 
 
@@ -142,7 +140,7 @@ Cyber Maze е 2D едукативна игра изработена во Python 
 
 
 
-\## ▶️ Извршна верзија (.exe)
+## ▶️ Извршна верзија (.exe)
 
 
 
@@ -158,11 +156,11 @@ Cyber Maze е 2D едукативна игра изработена во Python 
 
 
 
-\# 🇬🇧 English Version
+# English Version
 
 
 
-\## 📌 Project Description
+## 📌 Project Description
 
 
 
@@ -180,7 +178,7 @@ The game is designed to combine entertainment with learning, helping players imp
 
 
 
-\## 🎯 Game Objective
+## 🎯 Game Objective
 
 
 
@@ -210,11 +208,11 @@ If all lives are lost, the game ends.
 
 
 
-\## 🕹 How to Play
+## 🕹 How to Play
 
 
 
-\### Controls:
+### Controls:
 
 \- ⬅️ ➡️ ⬆️ ⬇️ Arrow keys to move
 
@@ -224,7 +222,7 @@ If all lives are lost, the game ends.
 
 
 
-\### Gameplay Mechanics:
+### Gameplay Mechanics:
 
 \- Navigate through 3 progressively challenging levels
 
@@ -270,7 +268,7 @@ Each question includes an explanation to reinforce learning.
 
 
 
-\## 🛠 Technologies Used
+## 🛠 Technologies Used
 
 
 
