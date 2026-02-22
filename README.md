@@ -285,6 +285,32 @@ Each question includes an explanation to reinforce learning.
 ---
 
 
+## 📸 Game Screenshots
+
+
+
+## 📸 Game Screenshots
+
+### 🏠 Main Menu
+![Main Menu](screenshots/menu.png)
+
+### 🧩 Maze Gameplay
+![Maze](screenshots/gameplay.png)
+
+### ❓ Quiz Screen
+![Quiz](screenshots/quiz_screen.png)
+
+### 💀 Game Over
+![Game Over](screenshots/game_over.png)
+
+## Tips and Tricks
+![Tips and Tricks](screenshots/tips_and_tricks.png)
+
+## Game Complete
+![Game Complete](screenshots/game_complete.png)
+
+
+
 
 \## ▶️ Executable Version (.exe)
 
