@@ -307,7 +307,7 @@ Each question includes an explanation to reinforce learning.
 
 
 
-\## ▶️ Executable Version (.exe)
+## ▶️ Executable Version (.exe)
 
 
 
