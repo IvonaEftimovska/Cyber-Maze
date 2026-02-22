@@ -288,9 +288,6 @@ Each question includes an explanation to reinforce learning.
 ## 📸 Game Screenshots
 
 
-
-## 📸 Game Screenshots
-
 ### 🏠 Main Menu
 ![Main Menu](screenshots/menu.png)
 
