@@ -43,8 +43,10 @@ def load_image(path, size):
         surf.fill((200, 0, 200))
         return surf
 
-good_spy = load_image(resource_path("assets/good_spy.png"), (TILE-6, TILE-6))
-bad_spy = load_image(resource_path("assets/bad_spy.png"), (TILE-6, TILE-6))
+SPRITE_SIZE = TILE - 6
+
+good_spy = load_image(resource_path("assets/good_spy.png"), (SPRITE_SIZE, SPRITE_SIZE))
+bad_spy = load_image(resource_path("assets/bad_spy.png"), (SPRITE_SIZE, SPRITE_SIZE))
 portal_sprite = load_image(resource_path("assets/portal.png"), (TILE*2, TILE*2))
 heart_img = load_image(resource_path("assets/heart.png"), (36, 36))
 
@@ -171,17 +173,28 @@ class Player:
         self.speed = 4
         self.lives = 3
         self.spawn()
+        self.facing_right = True
 
     def spawn(self):
-        self.rect = pygame.Rect(TILE+4, TILE+4, TILE-8, TILE-8)
+        self.rect = pygame.Rect(TILE + 3, TILE + 3, SPRITE_SIZE, SPRITE_SIZE)
 
     def move(self, dx, dy):
+
+        if dx > 0:
+            self.facing_right = True
+        elif dx < 0:
+            self.facing_right = False
+
         self.rect.x += dx
         if is_wall(self.rect):
             self.rect.x -= dx
+
         self.rect.y += dy
         if is_wall(self.rect):
             self.rect.y -= dy
+
+        self.rect.x = max(0, min(self.rect.x, len(LEVEL[0]) * TILE - self.rect.width))
+        self.rect.y = max(0, min(self.rect.y, len(LEVEL) * TILE - self.rect.height))
 
 player = Player()
 
@@ -194,9 +207,26 @@ def get_empty_tiles(level):
     return tiles
 
 def is_wall(rect):
-    gx = rect.centerx // TILE
-    gy = rect.centery // TILE
-    return LEVEL[gy][gx] == "1"
+    corners = [
+        (rect.left, rect.top),
+        (rect.right - 1, rect.top),
+        (rect.left, rect.bottom - 1),
+        (rect.right - 1, rect.bottom - 1),
+    ]
+
+    for px, py in corners:
+        gx = px // TILE
+        gy = py // TILE
+
+        if gy < 0 or gy >= len(LEVEL):
+            return True
+        if gx < 0 or gx >= len(LEVEL[0]):
+            return True
+
+        if LEVEL[gy][gx] == "1":
+            return True
+
+    return False
 
 def load_level():
     global LEVEL, tokens, enemies, portal
@@ -213,11 +243,14 @@ def load_level():
         tokens.append(pygame.Rect(x*TILE+18, y*TILE+18, 12, 12))
 
     for i in range(1 + current_level):
-        x,y = random.choice(empty)
+        x, y = random.choice(empty)
+        direction = random.choice([(1, 0), (-1, 0), (0, 1), (0, -1)])
+
         enemies.append({
-            "rect": pygame.Rect(x*TILE, y*TILE, TILE-6, TILE-6),
-            "dir": random.choice([(1,0),(-1,0),(0,1),(0,-1)]),
-            "speed": 2 + current_level
+            "rect": pygame.Rect(x * TILE + 3, y * TILE + 3, SPRITE_SIZE, SPRITE_SIZE),
+            "dir": direction,
+            "speed": 2 + current_level,
+            "facing_right": True if direction[0] >= 0 else False
         })
 
 def fade_transition(color=(0,0,0), speed=5):
@@ -260,7 +293,7 @@ def draw_neon_button(surface, rect, color, text, font):
     pygame.draw.rect(surface, glow_color, rect, border_radius=12)
 
     # Text
-    text_surface = font.render(text, False, WHITE)
+    text_surface = font.render(text, False, TOP_BAR)
     surface.blit(text_surface,
                  (rect.centerx - text_surface.get_width() // 2,
                   rect.centery - text_surface.get_height() // 2))
@@ -503,17 +536,32 @@ while running:
                 state = "quiz"
 
         for e in enemies:
-            dx,dy=e["dir"]
-            e["rect"].x+=dx*e["speed"]
-            e["rect"].y+=dy*e["speed"]
+            dx, dy = e["dir"]
+            if dx > 0:
+                e["facing_right"] = True
+            elif dx < 0:
+                e["facing_right"] = False
+
+            e["rect"].x += dx * e["speed"]
+            e["rect"].y += dy * e["speed"]
 
             if is_wall(e["rect"]):
                 e["rect"].x-=dx*e["speed"]
                 e["rect"].y-=dy*e["speed"]
                 e["dir"]=random.choice([(1,0),(-1,0),(0,1),(0,-1)])
 
-            screen.blit(bad_spy,
-                e["rect"].move(offset_x,offset_y))
+            enemy_sprite = bad_spy
+
+            # If moving RIGHT → flip
+            if e["facing_right"]:
+                enemy_sprite = pygame.transform.flip(bad_spy, True, False)
+
+            draw_pos = e["rect"].move(offset_x, offset_y)
+
+            screen.blit(enemy_sprite, e["rect"].move(offset_x, offset_y))
+
+            #screen.blit(enemy_sprite,
+                       # e["rect"].move(offset_x, offset_y))
 
             if player.rect.colliderect(e["rect"]) and invincible_timer<=0:
                 player.lives-=1
@@ -522,8 +570,15 @@ while running:
                     state="game_over"
 
         if invincible_timer<=0 or int(invincible_timer*10)%2==0:
-            screen.blit(good_spy,
-                player.rect.move(offset_x,offset_y))
+            if player.facing_right:
+                sprite = good_spy
+            else:
+                sprite = pygame.transform.flip(good_spy, True, False)
+
+            draw_pos = player.rect.move(offset_x, offset_y)
+
+            screen.blit(sprite, player.rect.move(offset_x, offset_y))
+            #screen.blit(sprite, draw_pos)
 
     # ---------------- QUIZ ----------------
     elif state == "quiz":
@@ -565,7 +620,7 @@ while running:
         for i, opt in enumerate(options):
             r = pygame.Rect(280, 300 + i * 80, 400, 60)
             pygame.draw.rect(screen, BLUE, r, border_radius=10)
-            ts = FONT.render(opt, True, WHITE)
+            ts = FONT.render(opt, True, TOP_BAR)
             screen.blit(ts, (r.centerx - ts.get_width() // 2,
                              r.centery - ts.get_height() // 2))
 
